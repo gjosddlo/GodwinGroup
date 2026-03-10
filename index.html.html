@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GodwinGroup</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  overflow:hidden;
+}
+
+body{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:24px;
+}
+
+/* animated brand */
+
+.brand{
+  position:absolute;
+  top:110px;
+  left:50%;
+  transform:translateX(-140vw) scale(0.9);
+  font-size:clamp(42px,9vw,64px);
+  line-height:1;
+  font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+  letter-spacing:1px;
+  white-space:nowrap;
+  animation:landIn 2.2s cubic-bezier(.2,.9,.2,1) forwards;
+  z-index:2;
+}
+
+@keyframes landIn{
+  0%{
+    transform:translateX(-140vw) scale(0.9);
+    opacity:0;
+  }
+
+  70%{
+    transform:translateX(-52%) scale(1.05);
+    opacity:1;
+  }
+
+  100%{
+    transform:translateX(-50%) scale(1.15);
+    opacity:1;
+  }
+}
+
+/* main text */
+
+.main{
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:900px;
+  padding:0 10px;
+}
+
+.main h1{
+  margin:0;
+  font-size:clamp(42px,10vw,90px);
+  font-weight:650;
+  letter-spacing:1px;
+  line-height:1.05;
+}
+
+/* tagline */
+
+.tagline{
+  margin-top:18px;
+  font-size:clamp(15px,4vw,22px);
+  letter-spacing:1.5px;
+  opacity:0.85;
+  line-height:1.4;
+}
+
+/* footer */
+
+.footer{
+  position:absolute;
+  bottom:28px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(92%,900px);
+  font-size:clamp(11px,3.2vw,18px);
+  letter-spacing:.4px;
+  opacity:.85;
+  line-height:1.6;
+}
+
+.footer span{
+  cursor:pointer;
+  text-decoration:underline;
+}
+
+/* GAME OVERLAY */
+
+#gameOverlay{
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:999;
+  display:none;
+}
+
+#gameOverlay iframe{
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+#closeGame{
+  position:absolute;
+  top:20px;
+  right:20px;
+  z-index:1000;
+  background:#111;
+  border:1px solid #fff;
+  color:#fff;
+  padding:8px 14px;
+  cursor:pointer;
+  border-radius:6px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="brand">
+GodwinGroup<sup style="font-size:11px;">®</sup>
+</div>
+
+<div class="main">
+  <h1>Coming Soon</h1>
+  <div class="tagline">Consult | Invest | Optimise</div>
+</div>
+
+<div class="footer">
+  Consultants | Venture Capital | <span id="aiBtn">AI Solutions</span>
+</div>
+
+<!-- GAME OVERLAY -->
+<div id="gameOverlay">
+  <button id="closeGame">Close</button>
+  <iframe src="Gameindex.html"></iframe>
+</div>
+
+<script>
+
+const aiBtn = document.getElementById("aiBtn");
+const overlay = document.getElementById("gameOverlay");
+const closeBtn = document.getElementById("closeGame");
+
+aiBtn.onclick = () => {
+  overlay.style.display = "block";
+}
+
+closeBtn.onclick = () => {
+  overlay.style.display = "none";
+}
+
+</script>
+
+</body>
+</html>
