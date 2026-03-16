@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GodwinGroup</title>
 
 <style>
-
 *{
   box-sizing:border-box;
 }
@@ -93,9 +91,58 @@ body{
   opacity:.85;
 }
 
+.footer a,
 .footer span{
+  color:#fff;
   cursor:pointer;
   text-decoration:underline;
+}
+
+.footer a:hover,
+.footer span:hover{
+  opacity:1;
+}
+
+.searchBox{
+  position:absolute;
+  top:20px;
+  right:20px;
+  z-index:10;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  width:min(92vw,360px);
+}
+
+.searchBox input{
+  flex:1;
+  min-width:0;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:#111;
+  color:#fff;
+  font-size:14px;
+  outline:none;
+}
+
+.searchBox input::placeholder{
+  color:rgba(255,255,255,0.55);
+}
+
+.searchBox button{
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:#1a1a1a;
+  color:#fff;
+  cursor:pointer;
+  font-size:14px;
+  white-space:nowrap;
+}
+
+.searchBox button:hover{
+  background:#262626;
 }
 
 /* GAME OVERLAY */
@@ -127,11 +174,26 @@ body{
   border-radius:6px;
 }
 
+@media (max-width:700px){
+  .brand{
+    top:95px;
+  }
+  .searchBox{
+    top:16px;
+    right:16px;
+    left:16px;
+    width:auto;
+  }
+}
 </style>
-
 </head>
 
 <body>
+
+<div class="searchBox">
+  <input id="searchInput" type="text" placeholder="Ask AI anything...">
+  <button id="searchBtn">Search</button>
+</div>
 
 <div class="brand">
 GodwinGroup<sup style="font-size:11px;">®</sup>
@@ -143,7 +205,7 @@ GodwinGroup<sup style="font-size:11px;">®</sup>
 </div>
 
 <div class="footer">
-  Consultants | Venture Capital | <span id="aiBtn">AI Solutions</span>
+  <a href="industry-news-live-clean-v2.html">Intel</a> | Venture Capital | <span id="aiBtn">AI Solutions</span>
 </div>
 
 <div id="gameOverlay">
@@ -152,19 +214,34 @@ GodwinGroup<sup style="font-size:11px;">®</sup>
 </div>
 
 <script>
-
 const aiBtn = document.getElementById("aiBtn");
 const overlay = document.getElementById("gameOverlay");
 const closeBtn = document.getElementById("closeGame");
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchBtn");
 
 aiBtn.onclick = () => {
   overlay.style.display = "block";
-}
+};
 
 closeBtn.onclick = () => {
   overlay.style.display = "none";
+};
+
+function askAI(){
+  const query = searchInput.value.trim();
+  if(!query) return;
+  const url = "https://chat.openai.com/?q=" + encodeURIComponent(query);
+  window.open(url, "_blank");
 }
 
+searchBtn.onclick = askAI;
+
+searchInput.addEventListener("keydown", (e) => {
+  if(e.key === "Enter"){
+    askAI();
+  }
+});
 </script>
 
 </body>
