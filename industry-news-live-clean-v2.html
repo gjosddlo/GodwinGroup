@@ -9,7 +9,7 @@
     :root{--bg:#0b0d12;--line:rgba(255,255,255,.08);--text:#f5f7fb;--chip:#1a2230;--muted:#c7d0df}
     *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
     a{text-decoration:none;color:inherit}.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(11,13,18,.88);border-bottom:1px solid var(--line)}
-    .topbar-inner,.page{max-width:1400px;margin:0 auto;padding:0 18px}.topbar-inner{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .topbar-inner,.page{max-width:1400px;margin:0 auto;padding:0 18px}.topbar-inner{min-height:64px;display:flex;align-items:center;justify-content:flex-end;gap:18px;position:relative}
     .brand{font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:.95rem}.homeLink{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);padding:10px 14px;border-radius:999px;font-size:.92rem}.homeLink:hover{background:#fff;color:#000}.nav{display:flex;gap:10px;flex-wrap:wrap}.nav a{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:10px 14px;border-radius:999px;font-size:.92rem}.nav a.active,.nav a:hover{background:#fff;color:#000}
     .tickerBar{border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);overflow:hidden;white-space:nowrap}.tickerTrack{display:inline-block;padding:10px 0;min-width:100%;animation:tickerMove 28s linear infinite}.tickerItem{display:inline-block;margin-right:28px;font-size:.9rem;color:#d7deea}.tickerItem b{color:#fff}.tickerItem .up{color:#3ddc97}.tickerItem .down{color:#ff7b7b}@keyframes tickerMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}.hero{display:grid;grid-template-columns:1.5fr .85fr;gap:18px;padding:22px 0 12px}.panel,.story,.market-card{background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));border:1px solid var(--line);border-radius:22px;box-shadow:0 12px 30px rgba(0,0,0,.28)}
     .hero-main,.hero-side,.story,.market-card,.panel{padding:18px}.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:7px 11px;border-radius:999px;color:#d7deea;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase}.eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block}
@@ -26,20 +26,36 @@
     @media (max-width:1180px){.layout,.hero,.story-grid,.split-card{grid-template-columns:1fr}} @media (max-width:720px){h1{font-size:2.2rem}.topbar-inner{padding:10px 0;align-items:flex-start;flex-direction:column}.chart-wrap,.chart-wrap.tall{height:320px}}
   
 .logoBrand{
-position:absolute;
-top:22px;
-left:50%;
-transform:translateX(140vw) scale(0.9);
+position:relative;
+margin-right:auto;
 font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
-font-size:34px;
+font-size:30px;
 white-space:nowrap;
+transform:translateX(100vw) scale(0.9);
 animation:logoSlide 2.2s cubic-bezier(.2,.9,.2,1) forwards;
-z-index:1000;
 }
 @keyframes logoSlide{
-0%{
-transform:translateX(140vw) scale(0.9);
-opacity:0;
+0%{transform:translateX(100vw) scale(0.9);opacity:0;}
+70%{transform:translateX(0) scale(1.05);opacity:1;}
+100%{transform:translateX(0) scale(1.4);opacity:1;}
+}
+70%{
+transform:translateX(8px) scale(1.05);
+opacity:1;
+}
+100%{
+transform:translateX(0) scale(1.45);
+opacity:1;
+}
+}
+70%{
+transform:translateX(10px) scale(1.05);
+opacity:1;
+}
+100%{
+transform:translateX(0px) scale(1.6);
+opacity:1;
+}
 }
 70%{
 transform:translateX(-52%) scale(1.05);
@@ -51,13 +67,40 @@ opacity:1;
 }
 }
 
+
+@media (max-width:900px){
+  .logoBrand{
+position:relative;
+margin-right:auto;
+font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+font-size:30px;
+white-space:nowrap;
+transform:translateX(100vw) scale(0.9);
+animation:logoSlide 2.2s cubic-bezier(.2,.9,.2,1) forwards;
+}
+}
+@media (max-width:720px){
+  .topbar-inner{justify-content:flex-end;align-items:flex-end;flex-direction:row}
+  .logoBrand{
+position:relative;
+margin-right:auto;
+font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+font-size:30px;
+white-space:nowrap;
+transform:translateX(100vw) scale(0.9);
+animation:logoSlide 2.2s cubic-bezier(.2,.9,.2,1) forwards;
+}
+}
+
 </style>
 </head>
 <body>
 
-<div class="logoBrand">GodwinGroup<sup style="font-size:10px;">®</sup></div>
 
-  <div class="topbar"><div class="topbar-inner"><div class="brand"></div><div class="nav"><a href="index.html">Home</a><a class="active" href="industry-news-live.html">Industry News</a></div></div></div>
+
+  <div class="topbar"><div class="topbar-inner">
+  <div class="logoBrand">GodwinGroup<sup style="font-size:10px;">®</sup></div>
+<div class="nav"><a href="index.html">Home</a><a class="active" href="industry-news-live.html">Industry News</a></div></div></div>
   <div class="tickerBar"><div class="page"><div class="tickerTrack" id="tickerBarContent"><span class="tickerItem"><b>Loading ticker…</b></span></div></div></div>
   <div class="page">
     <section class="hero">
