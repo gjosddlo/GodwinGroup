@@ -24,10 +24,40 @@
     .statbox .k{font-size:.72rem;text-transform:uppercase;color:#b3bed0;letter-spacing:.1em}.statbox .v{font-size:1.55rem;font-weight:900;margin:6px 0 4px;letter-spacing:-.03em}.statbox .s{font-size:.9rem;color:#cbd4df}
     .footer{padding:8px 0 34px;color:#9ea8b8;font-size:.88rem}.headline-source{font-size:.78rem;color:#aab6c8;margin-top:6px}.headline-link:hover,.lead-link:hover h2{text-decoration:underline}
     @media (max-width:1180px){.layout,.hero,.story-grid,.split-card{grid-template-columns:1fr}} @media (max-width:720px){h1{font-size:2.2rem}.topbar-inner{padding:10px 0;align-items:flex-start;flex-direction:column}.chart-wrap,.chart-wrap.tall{height:320px}}
-  </style>
+  
+.logoBrand{
+position:absolute;
+top:22px;
+left:50%;
+transform:translateX(140vw) scale(0.9);
+font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+font-size:34px;
+white-space:nowrap;
+animation:logoSlide 2.2s cubic-bezier(.2,.9,.2,1) forwards;
+z-index:1000;
+}
+@keyframes logoSlide{
+0%{
+transform:translateX(140vw) scale(0.9);
+opacity:0;
+}
+70%{
+transform:translateX(-52%) scale(1.05);
+opacity:1;
+}
+100%{
+transform:translateX(-50%) scale(1.35);
+opacity:1;
+}
+}
+
+</style>
 </head>
 <body>
-  <div class="topbar"><div class="topbar-inner"><div class="brand">Godwin Group</div><div class="nav"><a href="index.html">Home</a><a class="active" href="industry-news-live.html">Industry News</a></div></div></div>
+
+<div class="logoBrand">GodwinGroup<sup style="font-size:10px;">®</sup></div>
+
+  <div class="topbar"><div class="topbar-inner"><div class="brand"></div><div class="nav"><a href="index.html">Home</a><a class="active" href="industry-news-live.html">Industry News</a></div></div></div>
   <div class="tickerBar"><div class="page"><div class="tickerTrack" id="tickerBarContent"><span class="tickerItem"><b>Loading ticker…</b></span></div></div></div>
   <div class="page">
     <section class="hero">
