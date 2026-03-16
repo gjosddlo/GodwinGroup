@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Godwin Group | Industry News</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{--bg:#0b0d12;--line:rgba(255,255,255,.08);--text:#f5f7fb;--chip:#1a2230;--muted:#c7d0df}
+    *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+    a{text-decoration:none;color:inherit}.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(11,13,18,.88);border-bottom:1px solid var(--line)}
+    .topbar-inner,.page{max-width:1400px;margin:0 auto;padding:0 18px}.topbar-inner{min-height:64px;display:flex;align-items:center;justify-content:flex-end;gap:18px;position:relative}
+    .brand{font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:.95rem}.homeLink{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);padding:10px 14px;border-radius:999px;font-size:.92rem}.homeLink:hover{background:#fff;color:#000}.nav{display:flex;gap:10px;flex-wrap:wrap}.nav a{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:10px 14px;border-radius:999px;font-size:.92rem}.nav a.active,.nav a:hover{background:#fff;color:#000}
+    .tickerBar{border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);overflow:hidden;white-space:nowrap}.tickerTrack{display:inline-block;padding:10px 0;min-width:100%;animation:tickerMove 28s linear infinite}.tickerItem{display:inline-block;margin-right:28px;font-size:.9rem;color:#d7deea}.tickerItem b{color:#fff}.tickerItem .up{color:#3ddc97}.tickerItem .down{color:#ff7b7b}@keyframes tickerMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}.hero{display:grid;grid-template-columns:1.5fr .85fr;gap:18px;padding:22px 0 12px}.panel,.story,.market-card{background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));border:1px solid var(--line);border-radius:22px;box-shadow:0 12px 30px rgba(0,0,0,.28)}
+    .hero-main,.hero-side,.story,.market-card,.panel{padding:18px}.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:7px 11px;border-radius:999px;color:#d7deea;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase}.eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block}
+    h1{margin:16px 0 12px;font-size:clamp(2rem,4.5vw,4rem);line-height:.98;letter-spacing:-.04em;max-width:940px}.hero-copy{max-width:840px;color:#d2d9e5;font-size:1.05rem;line-height:1.65;margin:0 0 18px}.meta{display:flex;gap:10px;flex-wrap:wrap}.meta span{padding:8px 12px;border-radius:999px;background:var(--chip);border:1px solid var(--line);font-size:.84rem;color:#d3d9e4}
+    .mini-head,.label,.module-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#b4bfd0;margin-bottom:8px}.top-stories,.story-stack,.market-grid,.sidebar-stack,.compact-list{display:grid;gap:12px}
+    .top-story,.compact-item,.sidebar-pod,.statbox{padding:14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid var(--line)} .top-story .tag{font-size:.72rem;color:#b8c2d0;text-transform:uppercase;letter-spacing:.1em}
+    .top-story h3{margin:6px 0 7px;font-size:1rem;line-height:1.25}.top-story p,.story p,.sidebar-pod p,.compact-item span{margin:0;color:#cad2df;font-size:.93rem;line-height:1.55}
+    .layout{display:grid;grid-template-columns:1.05fr 1.1fr .8fr;gap:18px;padding:12px 0 40px}.story h2,.section-title{margin:0 0 10px;font-size:1.28rem;line-height:1.14}
+    .story-grid,.split-card{display:grid;grid-template-columns:1fr 1fr;gap:18px}.compact-item b{display:block;margin-bottom:5px}.market-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}.tab{border:1px solid var(--line);background:var(--chip);color:#d9e0eb;padding:9px 12px;border-radius:999px;font-size:.85rem;cursor:pointer}.tab.active{background:#fff;color:#000}
+    .chart-wrap{position:relative;height:360px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.02);padding:12px}.chart-wrap.tall{height:390px}.small-note{margin-top:12px;color:#aeb8c8;font-size:.86rem;line-height:1.5}
+    .ticker-table{width:100%;border-collapse:collapse;margin-top:12px}.ticker-table th,.ticker-table td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);font-size:.92rem}.ticker-table th{color:#b7c2d2;font-weight:600}.ticker-table td:last-child,.ticker-table th:last-child{text-align:right}
+    .statbox .k{font-size:.72rem;text-transform:uppercase;color:#b3bed0;letter-spacing:.1em}.statbox .v{font-size:1.55rem;font-weight:900;margin:6px 0 4px;letter-spacing:-.03em}.statbox .s{font-size:.9rem;color:#cbd4df}
+    .footer{padding:8px 0 34px;color:#9ea8b8;font-size:.88rem}.headline-source{font-size:.78rem;color:#aab6c8;margin-top:6px}.headline-link:hover,.lead-link:hover h2{text-decoration:underline}
+    @media (max-width:1180px){.layout,.hero,.story-grid,.split-card{grid-template-columns:1fr}} @media (max-width:720px){h1{font-size:2.2rem}.topbar-inner{padding:10px 0;align-items:flex-start;flex-direction:column}.chart-wrap,.chart-wrap.tall{height:320px}}
+  
+.logoBrand{
+position:relative;
+margin-right:auto;
+font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+font-size:30px;
+white-space:nowrap;
+transform:translateX(100vw) scale(0.9);
+animation:logoSlide 2.2s cubic-bezier(.2,.9,.2,1) forwards;
+}
+@keyframes logoSlide{
+0%{transform:translateX(100vw) scale(0.9);opacity:0;}
+70%{transform:translateX(0) scale(1.05);opacity:1;}
+100%{transform:translateX(0) scale(1.4);opacity:1;}
+}
+70%{
+transform:translateX(8px) scale(1.05);
+opacity:1;
+}
+100%{
+transform:translateX(0) scale(1.45);
+opacity:1;
+}
+}
+70%{
+transform:translateX(10px) scale(1.05);
+opacity:1;
+}
+100%{
+transform:translateX(0px) scale(1.6);
+opacity:1;
+}
+}
+70%{
+transform:translateX(-52%) scale(1.05);
+opacity:1;
+}
+100%{
+transform:translateX(-50%) scale(1.35);
+opacity:1;
+}
+}
+
+
+@media (max-width:900px){
+  .logoBrand{
+position:relative;
+margin-right:auto;
+font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+font-size:30px;
+white-space:nowrap;
+transform:translateX(100vw) scale(0.9);
+animation:logoSlide 2.2s cubic-bezier(.2,.9,.2,1) forwards;
+}
+}
+@media (max-width:720px){
+  .topbar-inner{justify-content:flex-end;align-items:flex-end;flex-direction:row}
+  .logoBrand{
+position:relative;
+margin-right:auto;
+font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+font-size:30px;
+white-space:nowrap;
+transform:translateX(100vw) scale(0.9);
+animation:logoSlide 2.2s cubic-bezier(.2,.9,.2,1) forwards;
+}
+}
+
+</style>
+</head>
+<body>
+
+
+
+  <div class="topbar"><div class="topbar-inner">
+  <div class="logoBrand">GodwinGroup<sup style="font-size:10px;">®</sup></div>
+<div class="nav"><a href="index.html">Home</a><a class="active" href="industry-news-live.html">Industry News</a></div></div></div>
+  <div class="tickerBar"><div class="page"><div class="tickerTrack" id="tickerBarContent"><span class="tickerItem"><b>Loading ticker…</b></span></div></div></div>
+  <div class="page">
+    <section class="hero">
+      <div class="panel hero-main">
+        <a class="homeLink" href="index.html">← Home</a><div style="height:12px"></div><div class="eyebrow">Industry News</div>
+        <h1>Advertising, media and ad tech — live market intelligence</h1>
+        <p class="hero-copy"></p>
+        <div class="meta"><span></span><span></span></div>
+      </div>
+      <aside class="panel hero-side"><div class="mini-head">Top line</div><div class="top-stories" id="heroCards"><div class="top-story"><div class="tag">Loading</div><h3>Pulling live headlines…</h3><p>Please wait.</p></div></div></aside>
+    </section>
+    <section class="layout">
+      <div class="story-stack">
+        <article class="story" id="leadStory"><div class="label">Lead Story</div><h2>Loading lead story…</h2><p>Pulling live news feed.</p></article>
+        <div class="story-grid">
+          <article class="story"><div class="label">Latest</div><div id="latestList" class="compact-list"><div class="compact-item">Loading…</div></div></article>
+          <article class="story"><div class="label">Agency / Advertiser / AdTech</div><div id="categoryList" class="compact-list"><div class="compact-item">Loading…</div></div></article>
+        </div>
+        
+        <article class="panel">
+          <div class="module-label">Deals &amp; Moves</div>
+          <div class="compact-list" id="dealsMovesList">
+            <div class="compact-item"><b>Loading deals and moves…</b><span>Refreshing current agency, advertiser and ad tech moves.</span></div>
+          </div>
+        </article>
+
+        <article class="panel"><div class="module-label">10 Predictions For The Quarter</div><div class="compact-list" id="predictionsList"></div></article>
+      </div>
+      <div class="market-grid">
+        <section class="market-card">
+          <div class="module-label">Market Caps Dashboard</div><h2 class="section-title">AdTech vs HoldCos — live snapshot</h2>
+          <div class="market-tabs"><button class="tab active" data-view="all">All</button><button class="tab" data-view="adtech">AdTech</button><button class="tab" data-view="holdco">HoldCos</button></div>
+          <div class="chart-wrap tall"><canvas id="marketCapBar"></canvas></div><div class="small-note" id="marketNote">Updating market caps now…</div>
+        </section>
+        <section class="market-card">
+          <div class="module-label">3-Month Trend</div><h2 class="section-title">Basket trend — month by month</h2>
+          <div class="chart-wrap"><canvas id="basketTrend"></canvas></div>
+          <div class="small-note">Trend is estimated from each stock’s live market cap and its 1-month interval price history over the last 3 months.</div>
+        </section>
+        <section class="market-card">
+          <div class="module-label">Current Snapshot</div>
+          <div class="split-card"><div class="statbox"><div class="k">AdTech basket</div><div class="v" id="adtechTotal">$0B</div><div class="s">Selected public ad-tech names</div></div><div class="statbox"><div class="k">HoldCo basket</div><div class="v" id="holdcoTotal">$0B</div><div class="s">Selected agency holdcos</div></div></div>
+          <table class="ticker-table"><thead><tr><th>Company</th><th>Type</th><th>Market Cap</th></tr></thead><tbody id="tickerRows"><tr><td colspan="3">Loading…</td></tr></tbody></table>
+        </section>
+      </div>
+      <aside class="sidebar-stack">
+        <section class="panel"><div class="module-label">Editor’s Take</div><div class="sidebar-pod"><h4>Owning workflow is becoming more valuable than owning another slice of inventory</h4><p>Whoever sits closest to discovery, planning and decisioning will control more of the budget conversation.</p>
+<div style="margin-top:12px;position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;">
+<iframe src="https://www.youtube.com/embed/iEpJwprxDdk?autoplay=1&mute=1&rel=0"
+title="Bloomberg Business Video"
+frameborder="0"
+allow="autoplay; encrypted-media; picture-in-picture"
+allowfullscreen
+style="position:absolute;top:0;left:0;width:100%;height:100%;">
+</iframe>
+</div>
+</div></section>
+        <section class="panel"><div class="module-label">What matters this week</div><div class="sidebar-pod" id="mattersThisWeek"><h4>Loading…</h4><p>Pulling themes from live headlines.</p></div></section>
+        
+      </aside>
+    </section>
+    <div class="footer">Godwin Group — market intelligence, operating insight and industry signals.</div>
+  </div>
+  <script>
+    const PROXY="https://allorigins.hexlet.app/get?disableCache=true&url=";
+    const REFRESH_MS=15*60*1000;
+    const TICKERS=[{symbol:"APP",company:"AppLovin",type:"AdTech"},{symbol:"TTD",company:"The Trade Desk",type:"AdTech"},{symbol:"MGNI",company:"Magnite",type:"AdTech"},{symbol:"IAS",company:"Integral Ad Science",type:"AdTech"},{symbol:"DV",company:"DoubleVerify",type:"AdTech"},{symbol:"CRTO",company:"Criteo",type:"AdTech"},{symbol:"OMC",company:"Omnicom",type:"HoldCo"},{symbol:"PUBGY",company:"Publicis",type:"HoldCo"},{symbol:"IPG",company:"Interpublic",type:"HoldCo"},{symbol:"DNTUY",company:"Dentsu",type:"HoldCo"},{symbol:"WPP",company:"WPP",type:"HoldCo"}];
+    const predictions=["LLM-native ad products move from experiment to proper budget line item.","A major holdco sharpens its AI-led operating model story and ties it to economics.","Supply-path quality and security become bigger client themes than open-web scale alone.","Retail-media logic spreads further into travel, finance and other first-party-data-rich sectors.","Programmatic DOOH gains ground as a real planning line rather than a tactical add-on.","Attention, curation and premium-path buying move closer to the bid decision itself.","Agency transformation narratives increasingly focus on tooling and workflow ownership.","Ad verification vendors edge closer to cyber-security territory as malvertising stays in focus.","Valuation debates shift further toward who owns discovery and decisioning, not just inventory.","Mid-sized M&A returns in curation, AI tooling, retail media infrastructure or creative automation."];
+    const fallbackHeadlines=[{title:"AI is moving from feature to operating layer in media and ad tech",link:"#",source:"Fallback",pubDate:"",description:"Planning, activation, optimization and reporting are converging around AI-assisted workflows."},{title:"AppLovin remains one of the biggest valuation stories in the sector",link:"#",source:"Fallback",pubDate:"",description:"Its equity value continues to dwarf much of the listed ad-tech peer set and many holdcos."},{title:"Supply path quality and security stay central to market conversations",link:"#",source:"Fallback",pubDate:"",description:"Malvertising and trust issues are pushing verification and cleaner supply paths up the agenda."}];
+    const fallbackMarketCaps=[{company:"AppLovin",type:"AdTech",cap:154.7,symbol:"APP",price:0},{company:"The Trade Desk",type:"AdTech",cap:13.01,symbol:"TTD",price:0},{company:"Magnite",type:"AdTech",cap:1.72,symbol:"MGNI",price:0},{company:"Integral Ad Science",type:"AdTech",cap:1.74,symbol:"IAS",price:0},{company:"DoubleVerify",type:"AdTech",cap:1.65,symbol:"DV",price:0},{company:"Criteo",type:"AdTech",cap:0.88,symbol:"CRTO",price:0},{company:"Omnicom",type:"HoldCo",cap:24.15,symbol:"OMC",price:0},{company:"Publicis",type:"HoldCo",cap:21.43,symbol:"PUBGY",price:0},{company:"Interpublic",type:"HoldCo",cap:8.93,symbol:"IPG",price:0},{company:"Dentsu",type:"HoldCo",cap:4.48,symbol:"DNTUY",price:0},{company:"WPP",type:"HoldCo",cap:3.39,symbol:"WPP",price:0}];
+    const basketFallback={labels:["Jan 2026","Feb 2026","Mar 2026"],adtech:[158,166,173.7],holdco:[58.4,60.2,62.38]};
+    let barChart,trendChart,marketRows=fallbackMarketCaps;
+    function fmtB(v){return "$"+Number(v).toFixed(2)+"B"} function domain(u){try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return""}}
+    function clean(html){const d=document.createElement("div");d.innerHTML=html||"";return(d.textContent||"").replace(/\s+/g," ").trim()}
+    async function fetchText(url){const r=await fetch(PROXY+encodeURIComponent(url));const j=await r.json();return j.contents}
+    async function fetchNews(){try{const url="https://news.google.com/rss/search?q=(advertising%20OR%20adtech%20OR%20programmatic%20OR%20media%20agency%20OR%20advertiser)%20when:7d&hl=en-GB&gl=GB&ceid=GB:en";const xmlText=await fetchText(url);const xml=new DOMParser().parseFromString(xmlText,"text/xml");const items=Array.from(xml.querySelectorAll("item")).slice(0,14).map(i=>({title:i.querySelector("title")?.textContent?.trim()||"Untitled",link:i.querySelector("link")?.textContent?.trim()||"#",pubDate:i.querySelector("pubDate")?.textContent?.trim()||"",description:clean(i.querySelector("description")?.textContent||"")||"Latest industry coverage from public news feeds.",source:domain(i.querySelector("link")?.textContent?.trim()||"")||"News"}));return items.length?items:fallbackHeadlines}catch(e){return fallbackHeadlines}}
+    function renderPredictions(){document.getElementById("predictionsList").innerHTML=predictions.map((p,i)=>`<div class="compact-item"><b>${i+1}. ${p}</b><span>Quarter-end scenario to watch.</span></div>`).join("")}
+    function renderNews(news){const lead=news[0]||fallbackHeadlines[0];document.getElementById("leadStory").innerHTML=`<div class="label">Lead Story</div><a class="lead-link" href="${lead.link}" target="_blank" rel="noopener noreferrer"><h2>${lead.title}</h2></a><p>${lead.description}</p><div class="headline-source">${lead.source}${lead.pubDate?" • "+new Date(lead.pubDate).toLocaleString("en-GB",{dateStyle:"medium"}):""}</div>`;document.getElementById("latestList").innerHTML=news.slice(1,6).map(i=>`<a class="headline-link compact-item" href="${i.link}" target="_blank" rel="noopener noreferrer"><b>${i.title}</b><span>${(i.description||"").slice(0,140)}${(i.description||"").length>140?"…":""}</span><div class="headline-source">${i.source}</div></a>`).join("");document.getElementById("categoryList").innerHTML=news.slice(6,11).map(i=>`<a class="headline-link compact-item" href="${i.link}" target="_blank" rel="noopener noreferrer"><b>${i.title}</b><span>${(i.description||"").slice(0,140)}${(i.description||"").length>140?"…":""}</span><div class="headline-source">${i.source}</div></a>`).join("");document.getElementById("heroCards").innerHTML=news.slice(0,3).map((i,n)=>`<div class="top-story"><div class="tag">${["Lead","Market","Watch"][n]||"Story"}</div><h3><a class="headline-link" href="${i.link}" target="_blank" rel="noopener noreferrer">${i.title}</a></h3><p>${(i.description||"").slice(0,135)}${(i.description||"").length>135?"…":""}</p></div>`).join("");document.getElementById("mattersThisWeek").innerHTML=`<h4>Three immediate themes</h4><p>${news.slice(0,3).map(n=>n.title).join(" • ")}</p>`}
+    async function fetchQuoteData(symbols){const t=await fetchText(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols.join(",")}`);return JSON.parse(t).quoteResponse?.result||[]}
+    async function fetchChart(symbol){const t=await fetchText(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=3mo&interval=1mo&includePrePost=false&events=div%2Csplits`);return JSON.parse(t)}
+    async function fetchMarkets(){try{const quotes=await fetchQuoteData(TICKERS.map(t=>t.symbol));const rows=TICKERS.map(t=>{const q=quotes.find(r=>r.symbol===t.symbol)||{};const cap=typeof q.marketCap==="number"?q.marketCap/1e9:(fallbackMarketCaps.find(f=>f.symbol===t.symbol)?.cap??null);const price=typeof q.regularMarketPrice==="number"?q.regularMarketPrice:null;return {...t,cap,price}});const charts=await Promise.all(TICKERS.map(t=>fetchChart(t.symbol).catch(()=>null)));const monthly={};TICKERS.forEach((t,idx)=>{const row=rows.find(r=>r.symbol===t.symbol);const result=charts[idx]?.chart?.result?.[0];const stamps=result?.timestamp||[];const closes=result?.indicators?.quote?.[0]?.close||[];const labels=[];const values=[];if(stamps.length&&closes.length&&row?.cap&&row?.price){stamps.forEach((ts,i)=>{const c=closes[i];if(typeof c==="number"&&row.price>0){labels.push(new Date(ts*1000).toLocaleString("en-GB",{month:"short",year:"numeric"}));values.push(row.cap*(c/row.price))}})}monthly[t.symbol]={labels,values}});const sample=Object.values(monthly).find(m=>m.labels?.length>=2);const labels=sample?.labels?.slice(-3)||basketFallback.labels;const adtech=labels.map(()=>0),holdco=labels.map(()=>0);TICKERS.forEach(t=>{const vals=(monthly[t.symbol]?.values||[]).slice(-labels.length);vals.forEach((v,i)=>{if(t.type==="AdTech")adtech[i]+=v;else holdco[i]+=v})});return{rows,trend:{labels,adtech:adtech.some(v=>v>0)?adtech:basketFallback.adtech,holdco:holdco.some(v=>v>0)?holdco:basketFallback.holdco},live:true}}catch(e){return{rows:fallbackMarketCaps,trend:basketFallback,live:false}}}
+    function renderMarketTable(rows){marketRows=rows;document.getElementById("tickerRows").innerHTML=rows.slice().sort((a,b)=>(b.cap||0)-(a.cap||0)).map(r=>`<tr><td>${r.company}</td><td>${r.type}</td><td>${r.cap!=null?fmtB(r.cap):"—"}</td></tr>`).join("");const a=rows.filter(r=>r.type==="AdTech").reduce((s,r)=>s+(r.cap||0),0);const h=rows.filter(r=>r.type==="HoldCo").reduce((s,r)=>s+(r.cap||0),0);document.getElementById("adtechTotal").textContent=fmtB(a);document.getElementById("holdcoTotal").textContent=fmtB(h)}
+    function buildBar(rows,view="all"){const f=view==="all"?rows:rows.filter(r=>r.type.toLowerCase()===view);if(barChart)barChart.destroy();barChart=new Chart(document.getElementById("marketCapBar"),{type:"bar",data:{labels:f.map(r=>r.company),datasets:[{data:f.map(r=>Number(r.cap||0)),backgroundColor:f.map(r=>r.type==="AdTech"?"rgba(255,255,255,0.92)":"rgba(146,163,191,0.92)"),borderColor:"rgba(255,255,255,0.08)",borderWidth:1,borderRadius:10}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(c)=>fmtB(c.raw)}}},scales:{x:{ticks:{color:"#d5deeb",maxRotation:60,minRotation:35},grid:{display:false}},y:{ticks:{color:"#c3cedd",callback:(v)=>"$"+v+"B"},grid:{color:"rgba(255,255,255,0.08)"}}}}})}
+    function buildTrend(tr){if(trendChart)trendChart.destroy();trendChart=new Chart(document.getElementById("basketTrend"),{type:"line",data:{labels:tr.labels,datasets:[{label:"AdTech Basket ($B)",data:tr.adtech,borderColor:"rgba(255,255,255,0.94)",backgroundColor:"rgba(255,255,255,0.10)",fill:true,tension:.28,pointRadius:4},{label:"HoldCo Basket ($B)",data:tr.holdco,borderColor:"rgba(146,163,191,0.95)",backgroundColor:"rgba(146,163,191,0.12)",fill:true,tension:.28,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"#d7dfeb"}}},scales:{x:{ticks:{color:"#d2dbe8"},grid:{color:"rgba(255,255,255,0.06)"}},y:{ticks:{color:"#d2dbe8",callback:(v)=>"$"+v+"B"},grid:{color:"rgba(255,255,255,0.08)"}}}}})}
+
+    function renderTicker(rows){
+      const content = rows.slice().sort((a,b)=>(b.cap||0)-(a.cap||0)).map(r=>{
+        const cls = r.type === "AdTech" ? "up" : "down";
+        return `<span class="tickerItem"><b>${r.symbol || r.company}</b> ${r.cap != null ? fmtB(r.cap) : "—"} <span class="${cls}">${r.type}</span></span>`;
+      }).join("");
+      document.getElementById("tickerBarContent").innerHTML = content + content;
+    }
+
+    function renderDealsMoves(news){
+      const keywords = ["deal","acquire","acquisition","merger","review","account","win","appoint","appointment","partnership","launch","expands","expansion","investment","funding","hiring","move","moves"];
+      const picked = news.filter(n => {
+        const t = (n.title + " " + (n.description || "")).toLowerCase();
+        return keywords.some(k => t.includes(k));
+      }).slice(0,5);
+
+      const source = picked.length ? picked : news.slice(0,5);
+      document.getElementById("dealsMovesList").innerHTML = source.map(item => `
+        <a class="headline-link compact-item" href="${item.link}" target="_blank" rel="noopener noreferrer">
+          <b>${item.title}</b>
+          <span>${(item.description || "").slice(0,145)}${(item.description || "").length > 145 ? "…" : ""}</span>
+          <div class="headline-source">${item.source}</div>
+        </a>
+      `).join("");
+    }
+
+    async function refreshAll(){renderPredictions();const [news,markets]=await Promise.all([fetchNews(),fetchMarkets()]);renderNews(news);renderDealsMoves(news);renderMarketTable(markets.rows);renderTicker(markets.rows);buildBar(markets.rows,document.querySelector(".tab.active")?.dataset.view||"all");buildTrend(markets.trend);document.getElementById("marketNote").textContent=markets.live?"Live market caps pulled client-side from public market data endpoints.":"Live market feed was unavailable, so the page fell back to an embedded snapshot.";document.getElementById("lastUpdated").textContent="Last updated: "+new Date().toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"})}
+    document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");buildBar(marketRows,btn.dataset.view)}));
+    refreshAll(); setInterval(refreshAll,REFRESH_MS);
+  </script>
+</body></html>
