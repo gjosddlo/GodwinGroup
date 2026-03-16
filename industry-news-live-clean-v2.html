@@ -10,8 +10,8 @@
     *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
     a{text-decoration:none;color:inherit}.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(11,13,18,.88);border-bottom:1px solid var(--line)}
     .topbar-inner,.page{max-width:1400px;margin:0 auto;padding:0 18px}.topbar-inner{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:18px}
-    .brand{font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:.95rem}.nav{display:flex;gap:10px;flex-wrap:wrap}.nav a{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:10px 14px;border-radius:999px;font-size:.92rem}.nav a.active,.nav a:hover{background:#fff;color:#000}
-    .hero{display:grid;grid-template-columns:1.5fr .85fr;gap:18px;padding:22px 0 12px}.panel,.story,.market-card{background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));border:1px solid var(--line);border-radius:22px;box-shadow:0 12px 30px rgba(0,0,0,.28)}
+    .brand{font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:.95rem}.homeLink{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);padding:10px 14px;border-radius:999px;font-size:.92rem}.homeLink:hover{background:#fff;color:#000}.nav{display:flex;gap:10px;flex-wrap:wrap}.nav a{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:10px 14px;border-radius:999px;font-size:.92rem}.nav a.active,.nav a:hover{background:#fff;color:#000}
+    .tickerBar{border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);overflow:hidden;white-space:nowrap}.tickerTrack{display:inline-block;padding:10px 0;min-width:100%;animation:tickerMove 28s linear infinite}.tickerItem{display:inline-block;margin-right:28px;font-size:.9rem;color:#d7deea}.tickerItem b{color:#fff}.tickerItem .up{color:#3ddc97}.tickerItem .down{color:#ff7b7b}@keyframes tickerMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}.hero{display:grid;grid-template-columns:1.5fr .85fr;gap:18px;padding:22px 0 12px}.panel,.story,.market-card{background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));border:1px solid var(--line);border-radius:22px;box-shadow:0 12px 30px rgba(0,0,0,.28)}
     .hero-main,.hero-side,.story,.market-card,.panel{padding:18px}.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:7px 11px;border-radius:999px;color:#d7deea;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase}.eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block}
     h1{margin:16px 0 12px;font-size:clamp(2rem,4.5vw,4rem);line-height:.98;letter-spacing:-.04em;max-width:940px}.hero-copy{max-width:840px;color:#d2d9e5;font-size:1.05rem;line-height:1.65;margin:0 0 18px}.meta{display:flex;gap:10px;flex-wrap:wrap}.meta span{padding:8px 12px;border-radius:999px;background:var(--chip);border:1px solid var(--line);font-size:.84rem;color:#d3d9e4}
     .mini-head,.label,.module-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#b4bfd0;margin-bottom:8px}.top-stories,.story-stack,.market-grid,.sidebar-stack,.compact-list{display:grid;gap:12px}
@@ -28,11 +28,12 @@
 </head>
 <body>
   <div class="topbar"><div class="topbar-inner"><div class="brand">Godwin Group</div><div class="nav"><a href="index.html">Home</a><a class="active" href="industry-news-live.html">Industry News</a></div></div></div>
+  <div class="tickerBar"><div class="page"><div class="tickerTrack" id="tickerBarContent"><span class="tickerItem"><b>Loading ticker…</b></span></div></div></div>
   <div class="page">
     <section class="hero">
       <div class="panel hero-main">
-        <div class="eyebrow">Industry News</div>
-        <h1>Advertising, media and ad tech, live market intelligence</h1>
+        <a class="homeLink" href="index.html">← Home</a><div style="height:12px"></div><div class="eyebrow">Industry News</div>
+        <h1>Advertising, media and ad tech — live market intelligence</h1>
         <p class="hero-copy"></p>
         <div class="meta"><span></span><span></span></div>
       </div>
@@ -45,6 +46,14 @@
           <article class="story"><div class="label">Latest</div><div id="latestList" class="compact-list"><div class="compact-item">Loading…</div></div></article>
           <article class="story"><div class="label">Agency / Advertiser / AdTech</div><div id="categoryList" class="compact-list"><div class="compact-item">Loading…</div></div></article>
         </div>
+        
+        <article class="panel">
+          <div class="module-label">Deals &amp; Moves</div>
+          <div class="compact-list" id="dealsMovesList">
+            <div class="compact-item"><b>Loading deals and moves…</b><span>Refreshing current agency, advertiser and ad tech moves.</span></div>
+          </div>
+        </article>
+
         <article class="panel"><div class="module-label">10 Predictions For The Quarter</div><div class="compact-list" id="predictionsList"></div></article>
       </div>
       <div class="market-grid">
@@ -93,7 +102,33 @@
     function renderMarketTable(rows){marketRows=rows;document.getElementById("tickerRows").innerHTML=rows.slice().sort((a,b)=>(b.cap||0)-(a.cap||0)).map(r=>`<tr><td>${r.company}</td><td>${r.type}</td><td>${r.cap!=null?fmtB(r.cap):"—"}</td></tr>`).join("");const a=rows.filter(r=>r.type==="AdTech").reduce((s,r)=>s+(r.cap||0),0);const h=rows.filter(r=>r.type==="HoldCo").reduce((s,r)=>s+(r.cap||0),0);document.getElementById("adtechTotal").textContent=fmtB(a);document.getElementById("holdcoTotal").textContent=fmtB(h)}
     function buildBar(rows,view="all"){const f=view==="all"?rows:rows.filter(r=>r.type.toLowerCase()===view);if(barChart)barChart.destroy();barChart=new Chart(document.getElementById("marketCapBar"),{type:"bar",data:{labels:f.map(r=>r.company),datasets:[{data:f.map(r=>Number(r.cap||0)),backgroundColor:f.map(r=>r.type==="AdTech"?"rgba(255,255,255,0.92)":"rgba(146,163,191,0.92)"),borderColor:"rgba(255,255,255,0.08)",borderWidth:1,borderRadius:10}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(c)=>fmtB(c.raw)}}},scales:{x:{ticks:{color:"#d5deeb",maxRotation:60,minRotation:35},grid:{display:false}},y:{ticks:{color:"#c3cedd",callback:(v)=>"$"+v+"B"},grid:{color:"rgba(255,255,255,0.08)"}}}}})}
     function buildTrend(tr){if(trendChart)trendChart.destroy();trendChart=new Chart(document.getElementById("basketTrend"),{type:"line",data:{labels:tr.labels,datasets:[{label:"AdTech Basket ($B)",data:tr.adtech,borderColor:"rgba(255,255,255,0.94)",backgroundColor:"rgba(255,255,255,0.10)",fill:true,tension:.28,pointRadius:4},{label:"HoldCo Basket ($B)",data:tr.holdco,borderColor:"rgba(146,163,191,0.95)",backgroundColor:"rgba(146,163,191,0.12)",fill:true,tension:.28,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"#d7dfeb"}}},scales:{x:{ticks:{color:"#d2dbe8"},grid:{color:"rgba(255,255,255,0.06)"}},y:{ticks:{color:"#d2dbe8",callback:(v)=>"$"+v+"B"},grid:{color:"rgba(255,255,255,0.08)"}}}}})}
-    async function refreshAll(){renderPredictions();const [news,markets]=await Promise.all([fetchNews(),fetchMarkets()]);renderNews(news);renderMarketTable(markets.rows);buildBar(markets.rows,document.querySelector(".tab.active")?.dataset.view||"all");buildTrend(markets.trend);document.getElementById("marketNote").textContent=markets.live?"Live market caps pulled client-side from public market data endpoints.":"Live market feed was unavailable, so the page fell back to an embedded snapshot.";document.getElementById("lastUpdated").textContent="Last updated: "+new Date().toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"})}
+
+    function renderTicker(rows){
+      const content = rows.slice().sort((a,b)=>(b.cap||0)-(a.cap||0)).map(r=>{
+        const cls = r.type === "AdTech" ? "up" : "down";
+        return `<span class="tickerItem"><b>${r.symbol || r.company}</b> ${r.cap != null ? fmtB(r.cap) : "—"} <span class="${cls}">${r.type}</span></span>`;
+      }).join("");
+      document.getElementById("tickerBarContent").innerHTML = content + content;
+    }
+
+    function renderDealsMoves(news){
+      const keywords = ["deal","acquire","acquisition","merger","review","account","win","appoint","appointment","partnership","launch","expands","expansion","investment","funding","hiring","move","moves"];
+      const picked = news.filter(n => {
+        const t = (n.title + " " + (n.description || "")).toLowerCase();
+        return keywords.some(k => t.includes(k));
+      }).slice(0,5);
+
+      const source = picked.length ? picked : news.slice(0,5);
+      document.getElementById("dealsMovesList").innerHTML = source.map(item => `
+        <a class="headline-link compact-item" href="${item.link}" target="_blank" rel="noopener noreferrer">
+          <b>${item.title}</b>
+          <span>${(item.description || "").slice(0,145)}${(item.description || "").length > 145 ? "…" : ""}</span>
+          <div class="headline-source">${item.source}</div>
+        </a>
+      `).join("");
+    }
+
+    async function refreshAll(){renderPredictions();const [news,markets]=await Promise.all([fetchNews(),fetchMarkets()]);renderNews(news);renderDealsMoves(news);renderMarketTable(markets.rows);renderTicker(markets.rows);buildBar(markets.rows,document.querySelector(".tab.active")?.dataset.view||"all");buildTrend(markets.trend);document.getElementById("marketNote").textContent=markets.live?"Live market caps pulled client-side from public market data endpoints.":"Live market feed was unavailable, so the page fell back to an embedded snapshot.";document.getElementById("lastUpdated").textContent="Last updated: "+new Date().toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"})}
     document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");buildBar(marketRows,btn.dataset.view)}));
     refreshAll(); setInterval(refreshAll,REFRESH_MS);
   </script>
