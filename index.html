@@ -58,7 +58,17 @@ let qs=[],i=0,answers=[];
 
 function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);}
 function best(){return localStorage.bestTheoryScore || "-";}
-function start(){qs=shuffle([...bank]).slice(0,20);i=0;answers=Array(20).fill(null);draw();}
+function randomizeOptions(q){
+ const pairs=q[1].map((text,idx)=>({text,correct:idx===q[2]}));
+ const mixed=shuffle(pairs);
+ return [q[0], mixed.map(x=>x.text), mixed.findIndex(x=>x.correct)];
+}
+function start(){
+ qs=shuffle([...bank]).slice(0,20).map(randomizeOptions);
+ i=0;
+ answers=Array(20).fill(null);
+ draw();
+}
 function score(){return qs.reduce((t,q,n)=>t+(answers[n]===q[2]?1:0),0);}
 
 function draw(){
